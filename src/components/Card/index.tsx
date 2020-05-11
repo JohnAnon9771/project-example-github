@@ -1,21 +1,27 @@
 import React from 'react';
 import { Repository } from '../../App';
 
+import { Content } from './styles';
+
 interface Props {
   repositories: Repository[];
 }
 
-export default function Card({ repositories }: Props) {
+const Card: React.FC<Props> = ({ repositories }) => {
   return (
     <ul>
       {repositories.map((repo) => (
-        <li key={repo.id}>
+        <Content key={repo.id}>
           <img src={repo.owner.avatar_url} alt="" />
-          <h3>{repo.owner.login}</h3>
-          <p>{repo.name}</p>
-          <p>{repo.description}</p>
-        </li>
+          <div>
+            <h3>{repo.owner.login}</h3>
+            <strong>{repo.name}</strong>
+            <p>{repo.description}</p>
+          </div>
+        </Content>
       ))}
     </ul>
   );
-}
+};
+
+export default Card;

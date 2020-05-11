@@ -3,7 +3,7 @@ import { FaPlus } from 'react-icons/fa';
 import logo from './assets/logo.svg';
 
 import Card from './components/Card';
-import { Container } from './styles/global';
+import GlobalStyle, { Container } from './styles/global';
 
 import api from './services/api';
 
@@ -19,13 +19,23 @@ export interface Repository {
 
 function App() {
   const [repository, setRepository] = useState('');
-  const [repositories, setRespositories] = useState<Repository[]>([]);
+  const [repositories, setRepositories] = useState<Repository[]>([]);
 
   async function handleSubmit(e: any) {
     e.preventDefault();
     const response = await api.get(`repos/${repository}`);
-    setRespositories([...repositories, response.data]);
+    setRepositories([...repositories, response.data]);
   }
+
+  useEffect(() => {
+    localStorage.setItem('repositories', JSON.stringify(repositories));
+  }, [repositories]);
+
+  useEffect(() => {
+    const response = JSON.parse(localStorage.getItem('repositories') as string);
+    // const response = JSON.parse(localStorage.getItem('repositories') || '{}');
+    setRepositories(response);
+  }, []);
 
   return (
     <Container>
@@ -43,6 +53,7 @@ function App() {
         </button>
       </form>
       <Card repositories={repositories} />
+      <GlobalStyle />
     </Container>
   );
 }
