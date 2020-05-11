@@ -28,7 +28,11 @@ function App() {
   }
 
   useEffect(() => {
-    localStorage.setItem('repositories', JSON.stringify(repositories));
+    if (repositories.length > 0) {
+      localStorage.setItem('repositories', JSON.stringify(repositories));
+    } else {
+      return;
+    }
   }, [repositories]);
 
   useEffect(() => {
